@@ -48,4 +48,39 @@ class BookController extends Controller
     {
         return view('books.show', compact('book'));
     }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Book $book)
+    {
+        return view('books.edit', compact('book'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Book $book)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'publisher' => 'required|string|max:255',
+            'year' => 'required|digits:4',
+        ]);
+
+        $book->update($request->all());
+
+        return redirect()->route('books.index')->with('success', 'Book updated successfully.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Book $book)
+    {
+        $book->delete();
+
+        return redirect()->route('books.index')->with('success', 'Book deleted successfully.');
+    }
 }
